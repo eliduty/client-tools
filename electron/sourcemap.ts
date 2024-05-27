@@ -1,9 +1,9 @@
 import { dialog } from "electron";
 import { readFileSync } from "node:fs";
 import { SourceMapConsumer } from "@jridgewell/source-map";
-
+import { basename } from "node:path";
 export interface SourceMapParserData {
-  sourcemapPath: string;
+  sourceMapPath: string;
   line: number;
   column: number;
 }
@@ -15,9 +15,9 @@ export async function handleFileOpen() {
   }
 }
 
-export function parseSourceMap({ sourcemapPath, line, column }: SourceMapParserData) {
+export function parseSourceMap({ sourceMapPath, line, column }: SourceMapParserData) {
   return new Promise(async (resolve, reject) => {
-    const sourcemapData = readFileSync(sourcemapPath).toString();
+    const sourcemapData = readFileSync(sourceMapPath).toString();
 
     const sourcemapConsumer = new SourceMapConsumer(sourcemapData, undefined);
 
@@ -31,15 +31,13 @@ export function parseSourceMap({ sourcemapPath, line, column }: SourceMapParserD
 
     if (originalPosition.source) {
       const sourceContent = sourcemapConsumer.sourceContentFor(originalPosition.source);
-      console.log(sourceContent)
-      if (sourceContent) {
-        const lines = sourceContent.split("\n");
-        const codeArr = [];
-        for (let i = -2; i <= 3; i++) {
-          codeArr.push(lines[originalPosition.line - i]);
-        }
-        resolve(codeArr.join("\n"));
-      }
+      const data = {
+        filename: basename(originalPosition.source),
+        line: originalPosition.line,
+        column: originalPosition.column,
+        content: sourceContent,
+      };
+      resolve(data);
     } else {
       reject(false);
     }

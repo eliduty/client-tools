@@ -11,6 +11,9 @@ importers:
       '@jridgewell/source-map':
         specifier: ^0.3.6
         version: 0.3.6
+      '@shikijs/twoslash':
+        specifier: ^1.6.0
+        version: 1.6.0(typescript@5.4.5)
       '@unocss/reset':
         specifier: ^0.60.3
         version: 0.60.3
@@ -30,6 +33,9 @@ importers:
       electron-builder:
         specifier: ^24.13.3
         version: 24.13.3(electron-builder-squirrel-windows@24.13.3(dmg-builder@24.13.3))
+      shiki:
+        specifier: ^1.6.0
+        version: 1.6.0
       typescript:
         specifier: ^5.2.2
         version: 5.4.5
@@ -537,6 +543,12 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@shikijs/core@1.6.0':
+    resolution: {integrity: sha512-NIEAi5U5R7BLkbW1pG/ZKu3eb1lzc3/+jD0lFsuxMT7zjaf9bbNwdNyMr7zh/Zl8EXQtQ+MYBAt5G+JLu+5DlA==}
+
+  '@shikijs/twoslash@1.6.0':
+    resolution: {integrity: sha512-sA9l5hgKNiB+CFUNwxeWyh4nvA6J/fSIzVZId1AhO4rRLINi5dFb13MmDSnxqw+60HKCKjsoWKcbVGvToQXJVA==}
+
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
@@ -596,6 +608,9 @@ packages:
 
   '@types/yauzl@2.10.3':
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
+
+  '@typescript/vfs@1.5.0':
+    resolution: {integrity: sha512-AJS307bPgbsZZ9ggCT3wwpg3VbTKMFNHfaY/uF0ahSkYYrPF2dSSKDNIDIQAHm9qJqbLvCsSJH7yN4Vs/CsMMg==}
 
   '@unocss/astro@0.60.3':
     resolution: {integrity: sha512-duFuyVhqYqQ15JZqx41UNgIxndqYRbOwDkJ7Y+R5N+u59a27vImz8B9eOFkHaZCFBWyH5jywkT8LVK1sfddFaw==}
@@ -1833,6 +1848,9 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
+  shiki@1.6.0:
+    resolution: {integrity: sha512-P31ROeXcVgW/k3Z+vUUErcxoTah7ZRaimctOpzGuqAntqnnSmx1HOsvnbAB8Z2qfXPRhw61yptAzCsuKOhTHwQ==}
+
   signal-exit@3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
 
@@ -1967,6 +1985,14 @@ packages:
 
   truncate-utf8-bytes@1.0.2:
     resolution: {integrity: sha512-95Pu1QXQvruGEhv62XCMO3Mm90GscOCClvrIUwCM0PYOXK3kaF3l3sIHxx71ThJfcbM2O5Au6SO3AWCSEfW4mQ==}
+
+  twoslash-protocol@0.2.6:
+    resolution: {integrity: sha512-8NbJlYeRdBcCTQ7ui7pdRPC1NL16aOnoYNz06oBW+W0qWNuiQXHgE8UeNvbA038aDd6ZPuuD5WedsBIESocB4g==}
+
+  twoslash@0.2.6:
+    resolution: {integrity: sha512-DcAKIyXMB6xNs+SOw/oF8GvUr/cfJSqznngVXYbAUIVfTW3M8vWSEoCaz/RgSD+M6vwtK8DJ4/FmYBF5MN8BGw==}
+    peerDependencies:
+      typescript: '*'
 
   type-fest@0.13.1:
     resolution: {integrity: sha512-34R7HTnG0XIJcBSn5XhDd7nNFPRcXYRZrBB2O2jdKqYODldSzBAqzsWoZYYvduky73toYS/ESqxPvkDf/F0XMg==}
@@ -2649,6 +2675,16 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.17.2':
     optional: true
 
+  '@shikijs/core@1.6.0': {}
+
+  '@shikijs/twoslash@1.6.0(typescript@5.4.5)':
+    dependencies:
+      '@shikijs/core': 1.6.0
+      twoslash: 0.2.6(typescript@5.4.5)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   '@sindresorhus/is@4.6.0': {}
 
   '@szmarczak/http-timer@4.0.6':
@@ -2711,6 +2747,12 @@ snapshots:
     dependencies:
       '@types/node': 20.12.12
     optional: true
+
+  '@typescript/vfs@1.5.0':
+    dependencies:
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
 
   '@unocss/astro@0.60.3(rollup@4.17.2)(vite@5.2.11(@types/node@20.12.12))':
     dependencies:
@@ -4165,6 +4207,10 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
+  shiki@1.6.0:
+    dependencies:
+      '@shikijs/core': 1.6.0
+
   signal-exit@3.0.7: {}
 
   signal-exit@4.1.0: {}
@@ -4318,6 +4364,16 @@ snapshots:
   truncate-utf8-bytes@1.0.2:
     dependencies:
       utf8-byte-length: 1.0.4
+
+  twoslash-protocol@0.2.6: {}
+
+  twoslash@0.2.6(typescript@5.4.5):
+    dependencies:
+      '@typescript/vfs': 1.5.0
+      twoslash-protocol: 0.2.6
+      typescript: 5.4.5
+    transitivePeerDependencies:
+      - supports-color
 
   type-fest@0.13.1:
     optional: true

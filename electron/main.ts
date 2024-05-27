@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -29,16 +29,18 @@ let win: BrowserWindow | null;
 
 function createWindow() {
   win = new BrowserWindow({
-    width:1200,
+    width: 1200,
+    height: 800,
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
     },
   });
   win.setMenu(null);
-
+  // win.setMaximizable(false);
+  // win.setResizable(false);
   // Open the DevTools.
-  win.webContents.openDevTools();
+  win.webContents.openDevTools({ mode: "undocked" });
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
@@ -69,12 +71,17 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
 app.whenReady().then(() => {
   ipcMain.handle("dialog:openFile", handleFileOpen);
   ipcMain.handle("parse-sourcemap", async (_, data: SourceMapParserData) => {
     const result = await parseSourceMap(data);
     return result;
   });
+  ipcMain.handle("resize-window", (_, width, height) => {
+    if (win) {
+      win.setSize(width, height);
+    }
+  });
+
   createWindow();
 });
