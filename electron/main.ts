@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 // import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { handleFileOpen, parseSourceMap, SourceMapParserData } from "./sourcemap";
+import { handleFileOpen, parseSourceMap, SourcemapParserData } from "./sourcemap";
 
 // const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -73,7 +73,7 @@ app.on("activate", () => {
 });
 app.whenReady().then(() => {
   ipcMain.handle("dialog:openFile", handleFileOpen);
-  ipcMain.handle("parse-sourcemap", async (_, data: SourceMapParserData) => {
+  ipcMain.handle("parse-sourcemap", async (_, data: SourcemapParserData) => {
     const result = await parseSourceMap(data);
     return result;
   });

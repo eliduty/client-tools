@@ -67,7 +67,7 @@ const handleRest = () => {
     <div class="flex flex-1 min-h-0">
       <div class="w-max-[500px]">
         <div class="flex justify-center text-30 pt-10 pb-5 border-b border-black/10 relative">
-          <span class="text">SourceMap解析工具</span>
+          <span class="text">Sourcemap Parser</span>
         </div>
         <t-form class="p-5 pr-10" ref="form" :data="parseData" :rules="rules" :label-width="100" label-align="right" @reset="handleRest" @submit="handleParse">
           <t-form-item label="map文件" name="sourcemapPath">
