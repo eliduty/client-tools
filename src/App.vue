@@ -3,14 +3,14 @@ import { codeToHtml } from "shiki/bundle/web";
 import { invoke } from "./utils";
 import { FormProps } from "tdesign-vue-next";
 const initData = () => ({
-  sourceMapPath: "",
+  sourcemapPath: "",
   line: undefined,
   column: undefined,
 });
 
 const parseData = ref(initData());
 const rules = {
-  sourceMapPath: [{ required: true, message: "请选择sourcemap文件" }],
+  sourcemapPath: [{ required: true, message: "请选择sourcemap文件" }],
   line: [{ required: true, message: "请输入错误行号" }],
   column: [{ required: true, message: "请输入错误列号" }],
 };
@@ -20,7 +20,7 @@ const change = () => {
   if (!isOpen.value) {
     isOpen.value = true;
     invoke("dialog:openFile").then((filePath) => {
-      parseData.value.sourceMapPath = filePath;
+      parseData.value.sourcemapPath = filePath;
       isOpen.value = false;
     });
   }
@@ -70,10 +70,10 @@ const handleRest = () => {
           <span class="text">SourceMap解析工具</span>
         </div>
         <t-form class="p-5 pr-10" ref="form" :data="parseData" :rules="rules" :label-width="100" label-align="right" @reset="handleRest" @submit="handleParse">
-          <t-form-item label="map文件" name="sourceMapPath">
-            <t-input v-model="parseData.sourceMapPath" readonly placeholder="请选择map文件" @click="change">
+          <t-form-item label="map文件" name="sourcemapPath">
+            <t-input v-model="parseData.sourcemapPath" readonly placeholder="请选择map文件" @click="change">
               <template #suffix>
-                <span class="cursor-pointer">{{ parseData.sourceMapPath ? "重新选择" : "选择文件" }}</span>
+                <span class="cursor-pointer">{{ parseData.sourcemapPath ? "重新选择" : "选择文件" }}</span>
               </template>
             </t-input>
           </t-form-item>
