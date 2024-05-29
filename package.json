@@ -1,8 +1,13 @@
 {
-  "name": "electron-vite-demo",
+  "name": "client-tools",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "client tools",
+  "author": {
+    "name": "zhangjiaolong",
+    "email": "zhangjiaolong@yineng.com.cn"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build && electron-builder",

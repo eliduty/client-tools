@@ -2,8 +2,8 @@ import { dialog } from "electron";
 import { readFileSync } from "node:fs";
 import { SourceMapConsumer } from "@jridgewell/source-map";
 import { basename } from "node:path";
-export interface SourcemapParserData {
-  sourcemapPath: string;
+export interface SourceMapParserData {
+  sourceMapPath: string;
   line: number;
   column: number;
 }
@@ -15,22 +15,22 @@ export async function handleFileOpen() {
   }
 }
 
-export function parseSourceMap({ sourcemapPath, line, column }: SourcemapParserData) {
+export function parseSourceMap({ sourceMapPath, line, column }: SourceMapParserData) {
   return new Promise(async (resolve, reject) => {
-    const sourcemapData = readFileSync(sourcemapPath).toString();
+    const sourceMapData = readFileSync(sourceMapPath).toString();
 
-    const sourcemapConsumer = new SourceMapConsumer(sourcemapData, undefined);
+    const sourceMapConsumer = new SourceMapConsumer(sourceMapData, undefined);
 
     const compressedLine = Number(line);
     const compressedColumn = Number(column);
 
-    const originalPosition = sourcemapConsumer.originalPositionFor({
+    const originalPosition = sourceMapConsumer.originalPositionFor({
       line: compressedLine,
       column: compressedColumn,
     });
 
     if (originalPosition.source) {
-      const sourceContent = sourcemapConsumer.sourceContentFor(originalPosition.source);
+      const sourceContent = sourceMapConsumer.sourceContentFor(originalPosition.source);
       const data = {
         filename: basename(originalPosition.source),
         line: originalPosition.line,
