@@ -2,10 +2,12 @@
 import { codeToHtml } from "shiki/bundle/web";
 import { invoke } from "./utils";
 import { FormProps } from "tdesign-vue-next";
+import message from "./utils/message";
+import { LoadingDirective as vLoading } from "tdesign-vue-next";
 const initData = () => ({
   sourceMapPath: "",
-  line: undefined,
-  column: undefined,
+  line: 142,
+  column: 74343,
 });
 
 const parseData = ref(initData());
@@ -34,17 +36,35 @@ interface ParseResult {
 }
 
 const parseResult = ref<ParseResult>();
+const loading = ref(false);
 const handleParse: FormProps["onSubmit"] = async ({ validateResult }) => {
   if (validateResult !== true) return;
-  invoke("parse-sourcemap", toRaw(parseData.value)).then((code) => {
-    parseResult.value = code;
-  });
+  loading.value = true;
+  invoke("parse-sourcemap", toRaw(parseData.value))
+    .then((code) => {
+      parseResult.value = code;
+    })
+    .catch(() => {
+      loading.value = false;
+      message.error("解析失败,请检查参数");
+    });
 };
 const code = ref();
+function getLangByFilename(filename: string) {
+  const ext = filename?.split(".")?.pop();
+  const langMap = {
+    javascript: ["js", "mjs"],
+    vue: ["vue"],
+  };
+  const lang = Object.entries(langMap).find(([, value]) => {
+    if (ext && value.includes(ext)) return true;
+  });
+  return lang?.[0] ?? "javascript";
+}
 watchEffect(async () => {
   if (parseResult.value?.content) {
     code.value = await codeToHtml(parseResult.value.content, {
-      lang: "vue",
+      lang: getLangByFilename(parseResult.value.filename),
       theme: "vitesse-dark",
       transformers: [
         {
@@ -54,6 +74,10 @@ watchEffect(async () => {
           },
         },
       ],
+    });
+    loading.value = false;
+    nextTick(() => {
+      document.querySelector(`[data-line="${parseResult.value?.line}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   }
 });
@@ -91,7 +115,7 @@ const handleRest = () => {
           </t-form-item>
         </t-form>
       </div>
-      <div class="flex-1 code min-h-0 overflow-auto bg-[#121212]">
+      <div class="flex-1 code min-h-0 overflow-auto bg-[#121212]" v-loading="loading">
         <div class="h-full" v-if="code" v-html="code"></div>
         <div class="flex text-white/30 flex justify-center items-center h-full" v-else>暂无解析代码</div>
       </div>
@@ -115,11 +139,8 @@ body,
 }
 
 .code pre .line.highlight {
-  background-color: #d4565620;
+  @apply bg-red/40 w-full inline-block
   transition: background-color 0.5s;
-
-  width: 100%;
-  display: inline-block;
 }
 
 .text {

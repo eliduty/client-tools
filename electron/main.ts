@@ -41,7 +41,7 @@ function createWindow() {
   // win.setMaximizable(false);
   // win.setResizable(false);
   // Open the DevTools.
-  // win.webContents.openDevTools({ mode: "undocked" });
+  win.webContents.openDevTools({ mode: "undocked" });
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
