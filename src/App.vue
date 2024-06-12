@@ -37,9 +37,11 @@ interface ParseResult {
 
 const parseResult = ref<ParseResult>();
 const loading = ref(false);
+const code = ref();
 const handleParse: FormProps["onSubmit"] = async ({ validateResult }) => {
   if (validateResult !== true) return;
   loading.value = true;
+  code.value = "";
   invoke("parse-sourcemap", toRaw(parseData.value))
     .then((code) => {
       parseResult.value = code;
@@ -49,7 +51,7 @@ const handleParse: FormProps["onSubmit"] = async ({ validateResult }) => {
       message.error("解析失败,请检查参数");
     });
 };
-const code = ref();
+
 function getLangByFilename(filename: string) {
   const ext = filename?.split(".")?.pop();
   const langMap = {
@@ -117,7 +119,7 @@ const handleRest = () => {
       </div>
       <div class="flex-1 code min-h-0 overflow-auto bg-[#121212]" v-loading="loading">
         <div class="h-full" v-if="code" v-html="code"></div>
-        <div class="flex text-white/30 flex justify-center items-center h-full" v-else>暂无解析代码</div>
+        <div class="flex text-white/30 flex justify-center items-center h-full" v-if="!code && !loading">暂无解析代码</div>
       </div>
     </div>
   </div>
