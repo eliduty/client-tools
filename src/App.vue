@@ -6,8 +6,8 @@ import message from "./utils/message";
 import { LoadingDirective as vLoading } from "tdesign-vue-next";
 const initData = () => ({
   sourceMapPath: "",
-  line: 142,
-  column: 74343,
+  line: undefined,
+  column: undefined,
 });
 
 const parseData = ref(initData());
