@@ -28,7 +28,6 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win: BrowserWindow | null;
 
 function createWindow() {
-  console.log(path.join(process.env.VITE_PUBLIC, "electron-vite.ico"))
   win = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -41,7 +40,7 @@ function createWindow() {
   // win.setMaximizable(false);
   // win.setResizable(false);
   // Open the DevTools.
-  win.webContents.openDevTools({ mode: "undocked" });
+  // win.webContents.openDevTools({ mode: "undocked" });
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
